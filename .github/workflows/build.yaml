@@ -1,0 +1,21 @@
+name: Build Artifacts
+
+on: 
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Upload functions_dummy artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: functions_dummy
+        path: ./functions_dummy/
+    - name: Upload functions_binding artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: functions_binding
+        path: ./functions_binding/
