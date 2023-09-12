@@ -9,6 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Setup bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+    - name: Build pages dist
+      run: |
+        cd ./pages
+        bun install
+        bunx quasar build
+    - name: Upload pages dist artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pages
+        path: ./pages/dist/spa/
     - name: Upload functions_dummy artifact
       uses: actions/upload-artifact@v2
       with:
