@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup bun
       uses: oven-sh/setup-bun@v1
       with:
@@ -19,17 +19,17 @@ jobs:
         bun install
         bunx quasar build
     - name: Upload pages dist artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: pages
         path: ./pages/dist/spa/
     - name: Upload functions_dummy artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: functions_dummy
         path: ./functions_dummy/
     - name: Upload functions_binding artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: functions_binding
         path: ./functions_binding/
