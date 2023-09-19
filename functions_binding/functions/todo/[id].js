@@ -4,9 +4,9 @@ export const onRequestPut = async (context) => {
     let data = await context.env.TODOS.get(id)
 
     if (data == null) {
-        return new Response(JSON.stringify({
+        return Response.json({
             "result": false,
-        }), {status: 404})
+        }, {status: 404})
     }
     data = JSON.parse(data)
 
@@ -19,9 +19,9 @@ export const onRequestPut = async (context) => {
 
     await context.env.TODOS.put(id, JSON.stringify(data))
 
-    return new Response(JSON.stringify({
+    return Response.json({
         "result": true,
-    }))
+    })
 }
 
 export const onRequestDelete = async (context) => {
@@ -29,7 +29,7 @@ export const onRequestDelete = async (context) => {
 
     await context.env.TODOS.delete(id)
 
-    return new Response(JSON.stringify({
+    return Response.json({
         "result": true,
-    }))
+    })
 }

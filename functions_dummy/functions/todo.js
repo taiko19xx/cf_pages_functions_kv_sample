@@ -1,5 +1,5 @@
 export const onRequestGet = async () => {
-    return new Response(JSON.stringify({
+    return Response.json({
         "todos": [
             {
                 "id": 1234567891,
@@ -12,15 +12,15 @@ export const onRequestGet = async () => {
                 "done": true,
             },
         ]
-    }))
+    })
 }
 
 export const onRequestPost = async (context) => {
     console.log(await context.request.json())
     const timestamp = Math.floor(Date.now() / 1000)
 
-    return new Response(JSON.stringify({
+    return Response.json({
         "result": true,
         "id": timestamp,
-    }))
+    })
 }
