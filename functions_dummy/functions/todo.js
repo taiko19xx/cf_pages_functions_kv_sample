@@ -17,9 +17,10 @@ export const onRequestGet = async () => {
 
 export const onRequestPost = async (context) => {
     console.log(await context.request.json())
+    const timestamp = Math.floor(Date.now() / 1000)
 
     return new Response(JSON.stringify({
         "result": true,
-        "id": 1234567892,
+        "id": timestamp,
     }))
 }
