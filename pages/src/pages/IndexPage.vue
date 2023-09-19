@@ -15,7 +15,7 @@
       <q-item 
       v-for=" (task, index) in tasks"
       :key="task.timestamp"
-      @click="task.done = !task.done"
+      @click="switchDone(index)"
       :class="{ 'done bg-blue-1' : task.done }"
       clickable
       v-ripple>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { api } from 'boot/axios'
+
 export default {
   data() {
     return {
@@ -49,13 +51,20 @@ export default {
       tasks: []
     }
   },
+  async mounted() {
+    const response = await api.get('/todo')
+    this.tasks = response.data.todos
+  },
   methods: {
     deleteTask(index){
       this.$q.dialog({
         message: 'タスクを削除しますか？',
         cancel: true,
         persistent: true
-      }).onOk(() => {
+      }).onOk(async () => {
+        const taskId = this.tasks[index].id
+        await api.delete(`/todo/${taskId}`)
+
         this.tasks.splice(index,1)
         this.$q.notify('削除しました')
       })
@@ -69,19 +78,33 @@ export default {
           model: '',
           type: 'text'
         }
-      }).onOk(data => {
+      }).onOk(async data => {
+        const taskId = this.tasks[index].id
+        await api.put(`/todo/${taskId}`, { title: data })
         this.tasks[index].title = data
       })
     },
-    addNewTask(){
-      const timestamp = Math.floor(Date.now() / 1000)
+    async switchDone(index){
+      const newDone = !this.tasks[index].done
+      const taskId = this.tasks[index].id
 
-      this.tasks.unshift({
-        id: timestamp,
+      await api.put(`/todo/${taskId}`, { done: newDone })
+
+      this.tasks[index].done = newDone
+    },
+    async addNewTask(){
+      let data = {
         title: this.newTaskName,
         done: false
-      })
+      }
+
+      const response = await api.post('/todo', data)
+      data.id = response.data.id
+
+      this.tasks.unshift(data)
       this.newTaskName = ''
+
+      console.log(this.tasks)
     }
   }
 }
