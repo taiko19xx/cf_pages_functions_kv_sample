@@ -14,7 +14,7 @@
 
       <q-item 
       v-for=" (task, index) in tasks"
-      :key="task.timestamp"
+      :key="task.id"
       @click="switchDone(index)"
       :class="{ 'done bg-blue-1' : task.done }"
       clickable
